@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<RepositoryUrl>https://github.com/OpenSourceKingdom/OSK.Security.Cryptography.Rsa</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<Description>Rsa implementation for the OSK Cryptography library with DI support in .NET</Description>
+		<Description>Rsa implementation for the OSK Cryptography library with DI support in .NET, which utilizes bouncy castle for cross platform support.</Description>
 		<PackageTags>OpenSourceKingdom, OpenSource, Cryptography, Security, Key, Encryption, Decryption, Signing, Verify, Rsa</PackageTags>
 		<Authors>BlankDev117</Authors>
 		<Title>OSK.Security.Cryptography.Rsa</Title>
