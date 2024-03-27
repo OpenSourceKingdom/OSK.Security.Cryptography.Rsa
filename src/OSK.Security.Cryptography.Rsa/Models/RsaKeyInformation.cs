@@ -2,14 +2,13 @@
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
-using OSK.Security.Cryptography;
-using OSK.Security.Cryptography.Abstractions;
+using OSK.Security.Cryptography.Models;
 using System;
 using System.Security.Cryptography;
 
 namespace OSK.Security.Cryptography.Rsa.Models
 {
-    public class RsaKeyInformation : AsymmetricKeyInformation
+    public class RsaKeyInformation : AsymmetricKeyInformation<RsaPublicKeyInformation>
     {
         #region Static
 
@@ -84,7 +83,7 @@ namespace OSK.Security.Cryptography.Rsa.Models
 
         #region AsymmetricKeyInformation Overrides
 
-        public override PublicKeyInformation GetPublicKeyInformation()
+        public override RsaPublicKeyInformation GetPublicKeyInformation()
         {
             return new RsaPublicKeyInformation()
             {

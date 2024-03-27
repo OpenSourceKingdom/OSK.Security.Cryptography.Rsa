@@ -6,7 +6,7 @@ using Xunit;
 namespace OSK.Security.Cryptography.Rsa.UnitTests
 {
     public abstract class AsymmetricKeyTests<T> : CryptographicKeyTests<T>
-        where T: AsymmetricKeyInformation
+        where T: IAsymmetricKeyInformation
     {
         #region Variables
 
