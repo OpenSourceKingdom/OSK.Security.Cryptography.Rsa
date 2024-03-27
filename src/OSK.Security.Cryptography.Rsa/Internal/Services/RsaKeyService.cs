@@ -7,7 +7,6 @@ using System;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using OSK.Security.Cryptography;
 using OSK.Security.Cryptography.Rsa.Models;
 
 namespace OSK.Security.Cryptography.Rsa.Internal.Services
@@ -16,9 +15,13 @@ namespace OSK.Security.Cryptography.Rsa.Internal.Services
     {
         #region Constructors
 
-        public RsaKeyService(RsaKeyInformation keyInformation)
-            : base(keyInformation)
+        public RsaKeyService()
         {
+        }
+
+        internal RsaKeyService(RsaKeyInformation keyInformation)
+        {
+            KeyInformation = keyInformation;
         }
 
         #endregion

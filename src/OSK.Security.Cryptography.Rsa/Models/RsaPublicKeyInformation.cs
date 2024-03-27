@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace OSK.Security.Cryptography.Rsa.Models
 {
-    public class RsaPublicKeyInformation : PublicKeyInformation
+    public class RsaPublicKeyInformation : IPublicKeyInformation
     {
         public byte[] PublicKey { get; set; }
 
