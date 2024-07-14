@@ -30,7 +30,7 @@ namespace OSK.Security.Cryptography.Rsa.UnitTests
         public async Task SignAsync_NullData_ThrowsArgumentNullException()
         {
             // Arrange/Act/Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await KeyService.SignAsync(null, HashAlgorithmName.SHA256));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await KeyService.SignAsync(null, ClassicSigningAlgorithms.SHA256));
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace OSK.Security.Cryptography.Rsa.UnitTests
             var data = Encoding.UTF8.GetBytes("A day in the life of a unit test.");
 
             // Act
-            var signedData = await KeyService.SignAsync(data, HashAlgorithmName.SHA256);
+            var signedData = await KeyService.SignAsync(data, ClassicSigningAlgorithms.SHA256);
 
             // Assert
             Assert.NotEqual(BitConverter.ToInt64(data), BitConverter.ToInt64(signedData));
@@ -54,14 +54,14 @@ namespace OSK.Security.Cryptography.Rsa.UnitTests
         public async Task ValidateSignatureAsync_NullData_ThrowsArgumentNullException()
         {
             // Arrange/Act/Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await KeyService.ValidateSignatureAsync(null, new byte[0], HashAlgorithmName.SHA256)); ;
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await KeyService.ValidateSignatureAsync(null, new byte[0], ClassicSigningAlgorithms.SHA256)); ;
         }
 
         [Fact]
         public async Task ValidateSignatureAsync_NullSignature_ThrowsArgumentNullException()
         {
             // Arrange/Act/Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await KeyService.ValidateSignatureAsync(new byte[0], null, HashAlgorithmName.SHA256));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await KeyService.ValidateSignatureAsync(new byte[0], null, ClassicSigningAlgorithms.SHA256));
         }
 
         [Theory]
@@ -71,12 +71,12 @@ namespace OSK.Security.Cryptography.Rsa.UnitTests
         {
             // Arrange
             var data = Encoding.UTF8.GetBytes("A day in the life of a unit test.");
-            var signedData = await KeyService.SignAsync(data, HashAlgorithmName.SHA256);
+            var signedData = await KeyService.SignAsync(data, ClassicSigningAlgorithms.SHA256);
 
             // Act
             var validationResult = await KeyService.ValidateSignatureAsync(data,
                 wrongHash ? signedData : new byte[0],
-                wrongHash ? HashAlgorithmName.SHA512 : HashAlgorithmName.SHA256);
+                wrongHash ? ClassicSigningAlgorithms.SHA512 : ClassicSigningAlgorithms.SHA256);
 
             // Assert
             Assert.False(validationResult);
@@ -87,10 +87,10 @@ namespace OSK.Security.Cryptography.Rsa.UnitTests
         {
             // Arrange
             var data = Encoding.UTF8.GetBytes("A day in the life of a unit test.");
-            var signedData = await KeyService.SignAsync(data, HashAlgorithmName.SHA256);
+            var signedData = await KeyService.SignAsync(data, ClassicSigningAlgorithms.SHA256);
 
             // Act
-            var validationResult = await KeyService.ValidateSignatureAsync(data, signedData, HashAlgorithmName.SHA256);
+            var validationResult = await KeyService.ValidateSignatureAsync(data, signedData, ClassicSigningAlgorithms.SHA256);
 
             // Assert
             Assert.True(validationResult);
