@@ -8,6 +8,8 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using OSK.Security.Cryptography.Rsa.Models;
+using OSK.Security.Cryptography.Abstractions;
+using System.Collections.Generic;
 
 namespace OSK.Security.Cryptography.Rsa.Internal.Services
 {
@@ -27,6 +29,15 @@ namespace OSK.Security.Cryptography.Rsa.Internal.Services
         #endregion
 
         #region AsymmetricCryptographicKey Overrides
+
+        public override IEnumerable<CryptographicSigningAlgorithm> SupportedSigningAlgorithms => new CryptographicSigningAlgorithm[]
+        {
+            ClassicSigningAlgorithms.MD5,
+            ClassicSigningAlgorithms.SHA1,
+            ClassicSigningAlgorithms.SHA256,
+            ClassicSigningAlgorithms.SHA384,
+            ClassicSigningAlgorithms.SHA512
+        };
 
         public override ValueTask<byte[]> EncryptAsync(byte[] data, CancellationToken cancellationToken = default)
         {
@@ -52,20 +63,22 @@ namespace OSK.Security.Cryptography.Rsa.Internal.Services
             return new ValueTask<byte[]>(cipher.ProcessBlock(data, 0, data.Length));
         }
 
-        public override ValueTask<byte[]> SignAsync(byte[] data, HashAlgorithmName hashAlgorithmName, CancellationToken cancellationToken = default)
+        public override ValueTask<byte[]> SignAsync(byte[] data, CryptographicSigningAlgorithm signingAlgorithm, CancellationToken cancellationToken = default)
         {
             if (data == null)
             {
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var signer = GetSigner(KeyInformation.SignaturePadding, hashAlgorithmName);
+            ValidateSigningAlgorithmSupport(signingAlgorithm);
+
+            var signer = GetSigner(KeyInformation.SignaturePadding, new HashAlgorithmName(signingAlgorithm.AlgorithmName));
             signer.Init(true, KeyInformation.PrivateKey);
             signer.BlockUpdate(data, 0, data.Length);
             return new ValueTask<byte[]>(signer.GenerateSignature());
         }
 
-        public override ValueTask<bool> ValidateSignatureAsync(byte[] data, byte[] signedData, HashAlgorithmName hashAlgorithmName, CancellationToken cancellationToken = default)
+        public override ValueTask<bool> ValidateSignatureAsync(byte[] data, byte[] signedData, CryptographicSigningAlgorithm signingAlgorithm, CancellationToken cancellationToken = default)
         {
             if (data == null)
             {
@@ -76,7 +89,9 @@ namespace OSK.Security.Cryptography.Rsa.Internal.Services
                 throw new ArgumentNullException(nameof(signedData));
             }
 
-            var signer = GetSigner(KeyInformation.SignaturePadding, hashAlgorithmName);
+            ValidateSigningAlgorithmSupport(signingAlgorithm);
+
+            var signer = GetSigner(KeyInformation.SignaturePadding, new HashAlgorithmName(signingAlgorithm.AlgorithmName));
             signer.Init(false, KeyInformation.PublicKey);
             signer.BlockUpdate(data, 0, data.Length);
             return new ValueTask<bool>(signer.VerifySignature(signedData));
