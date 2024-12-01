@@ -16,6 +16,12 @@ namespace OSK.Security.Cryptography.Rsa.Models
         private const int NumberOfTestsForPrime = 500;
         private static readonly KeySizes ValidKeySizes = new KeySizes(128, 512, 64);
 
+        /// <summary>
+        /// Returns an array of the valid key sizes for the Rsa encryption implementation
+        /// </summary>
+        /// <returns>The array of <see cref="KeySizes"/> that are valid for use with this implementation</returns>
+        public KeySizes[] GetValidKeySizes() => new KeySizes[] { ValidKeySizes };
+
         public static RsaKeyInformation New(int keySize,
             RSAEncryptionPadding encryptionPadding = null, RSASignaturePadding signaturePadding = null)
         {
