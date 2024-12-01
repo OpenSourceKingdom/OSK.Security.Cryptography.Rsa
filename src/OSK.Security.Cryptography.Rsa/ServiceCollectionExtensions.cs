@@ -8,7 +8,7 @@ namespace OSK.Security.Cryptography.Rsa
     {
         public static IServiceCollection AddRsaKeyService(this IServiceCollection services)
         {
-            services.AddAsymmetricKeyService<RsaKeyService, RsaKeyInformation>();
+            services.AddAsymmetricKeyService<RsaKeyService, RsaKeyInformation>("Rsa");
 
             return services;
         }
